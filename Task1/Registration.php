@@ -1,9 +1,10 @@
+<!-- # Registration form -->
 <html>
 <head>
 <title>Registration Form</title>
 </head>
 <body>
-<table style="width:30%">
+<table style="width:100%">
 <form>
 <tr>
 <td><label for="fName">Full Name:</label></td>
