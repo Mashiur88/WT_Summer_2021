@@ -8,10 +8,10 @@ include('../Control/Updatecheck.php');
 <body>
 <h2>Profile Page</h2>
 
-Hii, <h3><?php echo $_POST["search"];?></h3>
+Hi, <h3><?php echo $_SESSION["ID"];?></h3>
 <form action='' method='post'>
 Search Data by Username.
-<input type='text' name='search' id='search' value="Enter Username">
+<input type='text' name='search' id='search' value="">
 <input name='Button' type='submit' value='search'>
 </form>
 <br>
@@ -23,52 +23,38 @@ $radio1=$radio2=$radio3="";
 $firstname=$email="";
 $connection = new db();
 $conobj=$connection->OpenCon();
-
-$userQuery=$connection->CheckUser($conobj,"student",$_SESSION["ID"],$_SESSION["Password"]);
 $searchQuery=$connection->GetUser($conobj,"student",$_POST["search"]);
+if ($searchQuery->num_rows!=0)
+{
+if ($searchQuery->num_rows > 0) {
 
-if ($userQuery->num_rows > 0) {
-
-    // output data of each row
-    while($row = $userQuery->fetch_assoc()) {
-      $firstname=$row["firstname"];
-      $email=$row["email"];
-     
-      if(  $row["gender"]=="female" )
-      { $radio1="checked"; }
-      else if($row["gender"]=="male")
-      { $radio2="checked"; }
-      else{$radio3="checked";}
+  // output data of each row
+  while($row = $searchQuery->fetch_assoc()) {
+    $firstname=$row["firstname"];
+    $email=$row["email"];
+    $dob=$row["dob"];
    
-  } 
+    if(  $row["gender"]=="female" )
+    { $radio1="checked"; }
+    else if($row["gender"]=="male")
+    { $radio2="checked"; }
+    else if($row["gender"]=="other")
+    {$radio3="checked";}
+    else
+    {
+      $radioValidation="Nothing was checked";
+    }
+ 
+}
 }
   else {
     echo "0 results";
   }
-
-  if ($searchQuery->num_rows > 0) {
-
-    // output data of each row
-    while($row = $searchQuery->fetch_assoc()) {
-      $firstname=$row["firstname"];
-      $email=$row["email"];
-     
-      if(  $row["gender"]=="female" )
-      { $radio1="checked"; }
-      else if($row["gender"]=="male")
-      { $radio2="checked"; }
-      else{$radio3="checked";}
-   
-  } 
 }
-  else {
-    echo "0 results";
-  }
-
-
 
 ?>
 <form action='' method='post'>
+<input type='hidden' name='username'id='username'>
 firstname : <input type='text' name='firstname' value="<?php echo $firstname; ?>" >
 <br>
 
@@ -77,8 +63,11 @@ email : <input type='text' name='email' value="<?php echo $email; ?>" >
  Gender:
      <input type='radio' name='gender' value='female'<?php echo $radio1; ?>>Female
      <input type='radio' name='gender' value='male' <?php echo $radio2; ?> >Male
-     <input type='radio' name='gender' value='other'<?php  $radio3; ?> > Other
+     <input type='radio' name='gender' value='other'<?php echo $radio3; ?> > Other
   <br>
+
+  DOB : 
+    <input type="date" name="dob" value="<?php echo $dob; ?>"> <br>
 
      <input name='update' type='submit' value='Update'>  
 

@@ -8,8 +8,7 @@ function OpenCon()
  $dbpass = "";
  $db = "mydb";
  $conn = new mysqli($dbhost, $dbuser, $dbpass,$db) or die("Connect failed: %s\n". $conn -> error);
- 
- return $conn;
+  return $conn;
  }
  function CheckUser($conn,$table,$username,$password)
  {
@@ -29,9 +28,9 @@ $result = $conn->query("SELECT * FROM  $table");
  return $result;
  }
 
- function UpdateUser($conn,$table,$username,$firstname,$email)
+ function UpdateUser($conn,$table,$username,$firstname,$email,$dob,$gender)
  {
-     $sql = "UPDATE $table SET firstname='$firstname', email='$email' WHERE username='$username'";
+     $sql = "UPDATE $table SET firstname='$firstname', email='$email',dob='$dob',gender='$gender' WHERE username='$username'";
 
     if ($conn->query($sql) === TRUE) {
         $result= TRUE;
